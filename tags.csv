@@ -1,0 +1,7 @@
+﻿Name,Path,Data Type,Logical Address,Comment,Hmi Visible,Hmi Accessible,Hmi Writeable,Typeobject ID,Version ID
+MerkerINT,Tag table_1,Int,%MW0,,True,True,True,,
+MerkerReal,Tag table_1,Real,%MD0,,True,True,True,,
+InputReal,Tag table_1,Real,%ID4,,True,True,True,,
+InputInt,Tag table_1,Int,%IW8,,True,True,True,,
+OutInt,Tag table_1,Int,%QW10,,True,True,True,,
+OutReal,Tag table_1,Real,%QD12,,True,True,True,,

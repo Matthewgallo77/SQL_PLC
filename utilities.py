@@ -3,6 +3,8 @@ import snap7
 from snap7.util import *
 from snap7.exceptions import Snap7Exception
 from database_connect import DB
+import database_connect
+
 PLC = snap7.client.Client() # CREATE PLC INSTANCE
 tag_datatype = {'Int':2,'Real':4} # GLOBAL DICT OF DATA TYPE
 
@@ -14,24 +16,27 @@ def getOffset(address):
     return offset
 
 def connectPLC():
-    while True:
+    connected = False
+    while not connected:
         try:
             IP = input("Enter the IP address of the PLC: ")
             PLC.connect(IP,0,1) # IP, RACK #, SLOT #
-            print("CONNECTION STATUS: \nPLC: True") # DISPLAYS IF CONNECTION TO PLC IS VALID
+            print("CONNECTION STATUS: \nPLC is CONNECTED") # DISPLAYS IF CONNECTION TO PLC IS VALID
+            connected = True
             return IP
-        except snap7.error:
-            print("CONNECTION STATUS: \nPLC: False\nCheck PLC connection or re-enter IP.")
+        except Exception as e:
+            print("CONNECTION STATUS: \nPLC is NOT CONNECTED\nCheck PLC connection or re-enter IP.")
 
 def setPath():
     import os
     while True:
-        path = input("Enter a path to a .csv file: ")
+        path = input("Enter a path to a .xlsx file: ")
+        if '.' not in path:
+            path+='.xlsx'
         if os.path.exists(path):
-
             return path
         else:
-            print("Invalid file path. Please try again: \n")
+            print("Invalid file path. Make sure file is in same directory. Please try again: \n")
 
 def ReadData(byteArray, datatype): # M, MB, MW, MD
     if datatype == 'Real':
@@ -59,3 +64,7 @@ def PLC_READ(address, data_type):
         return print("Data type not anticipated, consult with Matt")
         
     return value
+
+def formatEntireTable(database, names, data_types, addresses):
+    for name, data_type, address in zip(names, data_types, addresses):
+        database.formatTable(name, data_type, address)
